@@ -5,15 +5,17 @@ import {
   Text,
   View,
   Image,
+  Button,
   Dimensions
 } from 'react-native';
 
-import Main from './main'
 
 let Window = Dimensions.get('window');
 let winWidth = Window.width;
 
-export default class App extends Component {
+
+
+export default class test03 extends Component {
   constructor(props) {
     super(props);
 
@@ -23,25 +25,33 @@ export default class App extends Component {
     
   }
 
-  handleClickPlay() {
-    this.setState({currentStep: 1});
-}
+  _handlePressPlay() {
+      console.log(this);
+    this.setState({page: 2});
+ }
+
       
 render() {
     switch (this.state.page) {
          case 1:
             return (
-                <View style={styles.main}>
+                <View style={styles.container}>
                     <Text style={styles.welcome}>
                     ROOT
                     </Text>
-                    <View>
-                        <button onClick={this.handleClickPlay}>Play</button>
+                    <View style={styles.bottons}>
+                        <Button
+                            onPress={() => this._handlePressPlay()}
+                            title="Play"
+                            color="#841584"
+                            accessibilityLabel="play game"
+                            />
                     </View>
                 </View>  
                 );
         case 2:
             return <Main/>
+            
         }
       }
 }
@@ -49,25 +59,14 @@ render() {
 
 console.log('width window: ', winWidth);
 const styles = StyleSheet.create({
-  main: {
-    flex:1,
-    backgroundColor: '#5a7487',
-    zIndex: 1
-  },
-  backdrop:	{
-		flex:	0,
-    width: winWidth,
-    height: winWidth,
-    position: 'absolute',
-    top: Math.floor(Window.height/5),
-    marginLeft: 0,
-    zIndex:5
-  },
   container: {
     flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  bottons : {
+    width: winWidth - winWidth/2  
   }
 });
 

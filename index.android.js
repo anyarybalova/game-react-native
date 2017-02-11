@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
+// cd android && ./gradlew assembleRelease
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import App from './src/root'
+import test03 from './src/nav'
 
 
-AppRegistry.registerComponent('App', () => test03);
+AppRegistry.registerComponent('test03', () => test03);

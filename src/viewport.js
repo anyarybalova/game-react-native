@@ -14,11 +14,12 @@ let Window = Dimensions.get('window');
 const winWidth = Window.width;
 let CIRCLE_DIAMETR = (winWidth)/6;
 let STEP = CIRCLE_DIAMETR;
+
 export default class Viewport extends Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
-        
+        //console.log(props);
+
         this.state = {
             pan: new Animated.ValueXY({
                 x: this.props.position.top, 
@@ -43,40 +44,47 @@ export default class Viewport extends Component {
                 var pos = this.state.pan.getLayout(); 
                 //console.log(gesture.moveX, gesture.moveY);
                 //this.state.pan.setValue({x: pos.x + 50, y: pos.y});
-                console.log(gesture.dx, gesture.dy);
+                //console.log(gesture.dx, gesture.dy);
                 var CONFIG = {tension: 2, friction: 3};
-    
-                /*var word = this.props.onColision({
-                    id: this.props.position.id,
-                    posTop: pos.top._value,
-                    posLeft: pos.left._value
-                });*/
-                //console.log(word);
+                //console.log(gesture);
+                
                 
             },
             onPanResponderRelease: (e, gesture) => {
                 this.state.pan.flattenOffset();
                 let valueX = 0;
                 let valueY = 0;
+                let dirX = 0;
+                let dirY = 0;
                 console.log(gesture.dy, gesture.dx);
                 if (Math.abs(gesture.dx) > Math.abs(gesture.dy)) {
                     if (gesture.dx > 0) {
                         valueX = STEP;
+                        dirX = 1;
                     } else {
                         valueX = -STEP;
+                        dirX = -1;
                     }
                 } else {
                     if (gesture.dy > 0) {
                         valueY = STEP;
+                        dirY = 1;
                     } else {
                         valueY = -STEP;
+                        dirY = -1;
                     }
                 }
-                Animated.spring(this.state.pan, {
-                    toValue: {
-                        x: this.state.pan.x._value + valueX, 
-                        y: this.state.pan.y._value + valueY}
-                }).start();
+                var canMove = this.props.onColision({
+                    id: this.props.position.id,
+                    direction: {x: dirY, y: dirX}
+                });
+                if (canMove) {
+                    Animated.spring(this.state.pan, {
+                        toValue: {
+                            x: this.state.pan.x._value + valueX, 
+                            y: this.state.pan.y._value + valueY}
+                    }).start();
+                }
             }
         });
 
@@ -97,14 +105,13 @@ export default class Viewport extends Component {
 
         let imageStyle = {transform: [{translateX}, {translateY}]};
 
-        
+        let src = './images/type_' + this.props.position.type + '.png';
         return (
                 <Animated.Image
-                    source={require('./images/ficha_v3.png')} 
+                    source={{uri: this.props.position.type}} 
                     {...this.panResponder.panHandlers}
                     style={this.getStyle()} >
                 </Animated.Image>
-           
         );
     }
 
@@ -115,6 +122,7 @@ let styles = StyleSheet.create({
     circle: {
         width: CIRCLE_DIAMETR,
         height: CIRCLE_DIAMETR,
-        zIndex: 30
+        zIndex: 30,
+        position: 'absolute'
     }
 });
