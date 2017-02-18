@@ -5,7 +5,6 @@ import {
   Text,
   View,
   Image,
-  Dimensions,
   Navigator,
   TouchableHighlight,
   Animated,
@@ -15,36 +14,41 @@ import {
 import Collection from './collection'
 import Viewport from './viewport'
 import { findNodeHandle } from 'react-native';
-let Window = Dimensions.get('window');
-let winWidth = Window.width;
+
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
+const winWidth = CON.WIDTH;
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.timeValue = new Animated.Value(10);
+    this.timeValue = new Animated.Value(1);
 
     this.state = {
       width: 600,
       height: 600,
-      top: Window.height/5
+      animation: true
     };
   }
 
 
   time () {
-     this.timeValue.setValue(1);
+    this.timeValue.setValue(1);
     Animated.timing(
       this.timeValue,
       {
         toValue: 0,
-        duration: 3000,
-        easing: Easing.linear
+        duration: this.props.totalTime,
+        easing: Easing.easeOutBack
       }
     ).start(() => this.gotoFinishPage('lost'));
   }
 
+
   componentDidMount () {
-    this.time();
+    if (this.props.totalTime > 0) {
+      this.time();
+    }
   }
   
   render() {
@@ -57,17 +61,24 @@ class Game extends Component {
   }
 
 	gotoMenu() {
-    this.props.navigator.jumpBack({
-      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+    this.setState({animation: false});
+    this.props.navigator.push({
+        id: 'Menu',
+        sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
     });
 	}
 
   gotoFinishPage(status) {
-    this.props.navigator.push({
-        id: 'Finish',
-        status: status,
-        sceneConfig: Navigator.SceneConfigs.FadeAndroid,
-    });
+    if (this.state.animation) {
+      this.props.navigator.push({
+          id: 'Finish',
+          passProps: {
+            status: status,
+            totalTime: this.props.totalTime
+          },
+          sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
+      });
+    }
   }
 
   measureView(event) {
@@ -92,12 +103,13 @@ class Game extends Component {
 
   renderScene() {
       var x = this.timeValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-60, 90],
+        inputRange: [0, 0.5, 1],
+        outputRange: [1, 1.1, 1]
       });
 
     return (
       <View style={styles.main}>
+        <Image source={require('./images/fondo_v5.png')} style={styles.backgroundImage} />
         <Text style={styles.welcome}>
           TESTING!
         </Text>
@@ -113,11 +125,14 @@ class Game extends Component {
             onPress={this.gotoMenu.bind(this)}>
           <Text style={{color: 'white'}}>BACK</Text>
         </TouchableHighlight>
-
-        <Animated.Image
+        
+        
+        {this.props.totalTime > 0 ? (
+            <Animated.Image
             source={require('./images/time.png')} 
             style={this.getTimeStyle(x)} >
-        </Animated.Image>
+          </Animated.Image>
+          ) : null}
       </View>  
     );
   }
@@ -130,12 +145,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#5a7487',
     zIndex: 1
   },
+  backgroundImage: {
+    resizeMode: 'stretch',
+    zIndex: 0,
+    width: winWidth,
+    height: CON.HEIGHT
+  },  
   backdrop:	{
 		flex:	0,
     width: winWidth,
     height: winWidth,
     position: 'absolute',
-    top: Math.floor(Window.height/5),
+    top: CON.TOP,
     marginLeft: 0,
     zIndex:5
   },
@@ -149,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    zIndex: 5
   },
   buttons : {
     backgroundColor: '#246dd5', 
@@ -156,11 +178,13 @@ const styles = StyleSheet.create({
     margin: 15,
     width: 200,
     alignItems: 'center',
-    top: Window.height - Window.height/5,
+    top: CON.HEIGHT - CON.OFFSET_TOP*3,
+    position: 'absolute',
     left: 300
   },
   time: {
-    top: Window.height - Window.height/3 + 50
+    position: 'absolute',
+    top: CON.HEIGHT - CON.OFFSET_TOP*3
   }
 });
 

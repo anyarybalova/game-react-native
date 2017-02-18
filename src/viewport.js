@@ -3,22 +3,20 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     PanResponder,
-    Dimensions,
     Animated,
     Text,
     View
 } from 'react-native';
 
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
 
-let Window = Dimensions.get('window');
-const winWidth = Window.width;
-let CIRCLE_DIAMETR = (winWidth)/6;
-let STEP = CIRCLE_DIAMETR;
+const CIRCLE_DIAMETR = CON.CELL;
+const STEP = CIRCLE_DIAMETR;
 
 export default class Viewport extends Component {
     constructor(props) {
         super(props);
-        //console.log(props);
 
         this.state = {
             pan: new Animated.ValueXY({

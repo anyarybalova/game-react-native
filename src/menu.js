@@ -6,16 +6,13 @@ import {
   View,
   Image,
   Button,
-  Dimensions,
   Navigator,
   TouchableHighlight
 } from 'react-native';
 
 
-let Window = Dimensions.get('window');
-let winWidth = Window.width;
-
-
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
 
 export default class Manu extends Component {
   constructor(props) {
@@ -28,9 +25,9 @@ export default class Manu extends Component {
   }
 
  
-gotoGame() {
+gotoLevels() {
     this.props.navigator.push({
-        id: 'Game',
+        id: 'Levels',
         sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
     });
 }
@@ -62,38 +59,36 @@ render() {
 renderScene() {
     return (
         <View style={styles.container}>
-            <Text style={styles.welcome}>
-            ROOT
-            </Text>
-            <View>
-                <TouchableHighlight style={styles.buttons}
-                    onPress={this.gotoGame.bind(this)}>
-                    <Text style={{color: 'white'}}>PLAY GAME</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={styles.buttons}
-                    onPress={this.gotoCredits.bind(this)}>
-                    <Text style={{color: 'white'}}>CREDITS</Text>
-                </TouchableHighlight>
 
-                <TouchableHighlight style={styles.buttons}
-                    onPress={this.gotoInstructions.bind(this)}>
-                    <Text style={{color: 'white'}}>INSTRUCTIONS</Text>
-                </TouchableHighlight>
-            </View>
+            <TouchableHighlight style={styles.buttons}
+                onPress={this.gotoLevels.bind(this)}>
+                <Text style={{color: 'white'}}>PLAY GAME</Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={styles.buttons}
+                onPress={this.gotoCredits.bind(this)}>
+                <Text style={{color: 'white'}}>CREDITS</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight style={styles.buttons}
+                onPress={this.gotoInstructions.bind(this)}>
+                <Text style={{color: 'white'}}>INSTRUCTIONS</Text>
+            </TouchableHighlight>
         </View>  
         );    
     }
 }
 
 
-console.log('width window: ', winWidth);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5a7487',
   },
+  backgroundImage: {
+    resizeMode: 'cover',
+  },  
   buttons : {
     backgroundColor: '#246dd5', 
     padding: 10,

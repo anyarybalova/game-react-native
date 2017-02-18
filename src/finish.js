@@ -12,6 +12,9 @@ import {
 } from 'react-native';
 
 
+const CntMod = require('./const');
+const CNT = (new CntMod()).CONST;
+
 class Finish extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +25,14 @@ class Finish extends Component {
   }
 
   gotoGame() {
-    this.props.navigator.jumpBack({
-        sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+    this.props.navigator.push({
+        id: 'Game',
+        totalTime: this.props.totalTime,
+        sceneConfig: Navigator.SceneConfigs.FloatFromRight
     });
  }
 
+ 
  gotoMenu() {
     this.props.navigator.push({
         id: 'Menu',

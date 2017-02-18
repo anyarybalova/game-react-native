@@ -12,6 +12,10 @@ TouchableHighlight
 } from 'react-native';
 
 
+const CntMod = require('./const');
+const CNT = (new CntMod()).CONST;
+
+
 class Instructions extends Component {
   render() {
     return (

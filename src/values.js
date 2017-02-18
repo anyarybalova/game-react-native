@@ -1,9 +1,10 @@
 'use strict'
-const cnst = require('./constants');
+
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
+
 const _ = require('lodash');
 
-const CON = cnst();
-console.log(CON);
 var SIZE = CON.CELL;
 var OFFSET_X = CON.OFFSET_LEFT;
 var OFFSET_Y = CON.OFFSET_TOP;
@@ -15,14 +16,6 @@ function Tile(i, j, type) {
 	this.top = j*SIZE + OFFSET_X;
 	this.left = i*SIZE + OFFSET_Y;
 };
-
-
-//var Matrix = [];
-/*var tile1 = new Tile(0,0);
-var tile2 = new Tile(1,1);
-Matrix.push(tile1);
-Matrix.push(tile2);
-*/
 
 
 function initicialization() {

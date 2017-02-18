@@ -5,15 +5,12 @@ import {
   Text,
   View,
   Image,
-  Button,
-  Dimensions
+  Button
 } from 'react-native';
 
 
-let Window = Dimensions.get('window');
-let winWidth = Window.width;
-
-
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
 
 export default class test03 extends Component {
   constructor(props) {

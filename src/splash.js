@@ -5,12 +5,14 @@ import {
   Text,
   View,
   Image,
-  Dimensions,
   Navigator,
   TouchableHighlight,
   Button
 } from 'react-native';
 
+
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
 
 class SplashPage extends Component {
   componentWillMount() {

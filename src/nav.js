@@ -18,6 +18,11 @@ import Credits from './credits';
 import Instructions from './instructions';
 import SplashPage from './splash';
 import Finish from './finish';
+import Levels from './levels';
+
+
+const CntMod = require('./const');
+const CON = (new CntMod()).CONST;
 
 export default class test03 extends Component {
   render() {
@@ -36,39 +41,32 @@ export default class test03 extends Component {
   
   renderScene(route, navigator) {
     var routeId = route.id;
-    if (routeId === 'SplashPage') {
-      return (
-        <SplashPage navigator={navigator} />
-      );
+    switch(route.id) {
+      case 'SplashPage':
+        component = <SplashPage navigator={navigator} />;
+        break;
+      case 'Menu':
+        component = <Menu navigator={navigator} />;
+        break;
+      case 'Credits':
+        component = <Credits navigator={navigator} />;
+        break;
+      case 'Levels':
+        component = <Levels navigator={navigator} />;
+        break;
+      case 'Game':
+        component = <Game navigator={navigator} {...route.passProps}/>
+        break;
+      case 'Instructions':
+        component = <Instructions navigator={navigator} />
+        break;
+      case 'Finish':
+        component = <Finish navigator={navigator} {...route.passProps} />
+        break;
+      default:
+        component = this.noRoute(navigator);
     }
-    if (routeId === 'Credits') {
-      return (
-        <Credits navigator={navigator} />
-      );
-    }
-    if (routeId === 'Game') {
-      return (
-        <Game navigator={navigator} />
-      );
-    }
-    if (routeId === 'Finish') {
-      const status = route.status;
-      return (
-        <Finish navigator={navigator} status={status} />
-      );
-    }
-    if (routeId === 'Menu') {
-      return (
-        <Menu navigator={navigator} />
-      );
-    }
-    if (routeId === 'Instructions') {
-      return (
-        <Instructions navigator={navigator} />
-      );
-    }
-    return this.noRoute(navigator);
-
+    return component;
   }
 
   gotoNext() {

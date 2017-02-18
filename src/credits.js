@@ -11,6 +11,8 @@ import {
 	TouchableHighlight
 } from 'react-native';
 
+const CntMod = require('./const');
+const CNT = (new CntMod()).CONST;
 
 class Credits extends Component {
   render() {
@@ -23,7 +25,6 @@ class Credits extends Component {
   }
 
 	gotoMenu() {
-		console.log('safasf');
     this.props.navigator.jumpBack({
       sceneConfig: Navigator.SceneConfigs.FloatFromRight,
     });
