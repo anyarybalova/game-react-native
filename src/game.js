@@ -11,43 +11,73 @@ import {
   Easing
 } from 'react-native';
 
+/*import {
+  Timer
+} from 'react-native-timer'
+*/
+const Timer = require('react-native-timer');
+const _ = require('lodash');
+
 import Collection from './collection'
 import Viewport from './viewport'
-import { findNodeHandle } from 'react-native';
+import Levels from './levels';
+import Time from './time';
+//import { findNodeHandle } from 'react-native';
 
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 const winWidth = CON.WIDTH;
+const start = CON.CELL*2/3;
+const finish = CON.WIDTH - CON.CELL;
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    this.timeValue = new Animated.Value(1);
-
+    
     this.state = {
       width: 600,
       height: 600,
-      animation: true
+      animation: true,
+      timeLeft: this.props.totalTime//,
+     // types: _.shuffle(CON.NUMBERS)
     };
   }
 
 
-  time () {
-    this.timeValue.setValue(1);
-    Animated.timing(
-      this.timeValue,
-      {
-        toValue: 0,
-        duration: this.props.totalTime,
-        easing: Easing.easeOutBack
+  shouldComponentUpdate (nextProps, nextState) {
+    return true;
+  }
+
+  tick() {
+    const t = this.state.timeLeft;
+
+      this.setState({timeLeft: t - 1});
+      if (this.state.timeLeft > 0) {
+      } else {
+        Timer.clearInterval(this);
+        this.gotoFinishPage('lost');
       }
-    ).start(() => this.gotoFinishPage('lost'));
   }
 
 
+  reloadGame() {
+    //this.setState({types: _.shuffle(CON.NUMBERS)});
+    //this.setState({timeLeft: this.props.totalTime});
+    Timer.clearInterval(this);
+    this.props.navigator.resetTo({
+        id: 'Game',
+        passProps: {
+            totalTime: this.props.totalTime
+        },
+        sceneConfig: Navigator.SceneConfigs.FadeAndroid,
+    });
+  }
+  
+
   componentDidMount () {
+    const self = this;
     if (this.props.totalTime > 0) {
-      this.time();
+      Timer.setInterval(this, 'tick', this.tick.bind(self), 1000);
     }
   }
   
@@ -60,10 +90,12 @@ class Game extends Component {
     );
   }
 
-	gotoMenu() {
+
+	gotoLevels() {
     this.setState({animation: false});
+    Timer.clearInterval(this);
     this.props.navigator.push({
-        id: 'Menu',
+        id: 'Levels',
         sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
     });
 	}
@@ -91,48 +123,52 @@ class Game extends Component {
   }
 
 
-  getTimeStyle(x) {
-      return [
-          styles.time, {
-              //opacity: this.timeValue
-              left: x,
-              transform: [{scaleX: this.timeValue}] 
-          }];
-  }
-
-
   renderScene() {
-      var x = this.timeValue.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: [1, 1.1, 1]
+      /*var x = this.timeValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [start, finish]
       });
 
+      var color = this.timeValue.interpolate({
+        inputRange: [0, 0.7, 0.85],
+        outputRange: ['rgba(0, 255, 0, 1)', 'rgba(0,255, 0, 1)', 'rgba(255, 0, 0, 1)']
+      });
+      */
     return (
       <View style={styles.main}>
-        <Image source={require('./images/fondo_v5.png')} style={styles.backgroundImage} />
-        <Text style={styles.welcome}>
-          TESTING!
-        </Text>
-        <Image onLayout={(event) => this.measureView(event)} ref="container" source={require('./images/base_v7.png')}
-                resizeMode='contain'
-                style={styles.backdrop}>
-            <View>
-              <Collection onWin={this.gotoFinishPage.bind(this)}/>
-            </View>
-        </Image>
+        <View style={styles.ads}></View>
+        <View style={styles.container}>
+          <Image source={require('./images/environment.png')} style={styles.backgroundImage} />
+          
+          <Image onLayout={(event) => this.measureView(event)} ref="container" 
+              source={require('./images/base_v7.png')}
+                  style={styles.backdrop}>
+              <View>
+                <Collection onWin={this.gotoFinishPage.bind(this)}/>
+              </View>
+          </Image>
 
-        <TouchableHighlight style={styles.buttons}
-            onPress={this.gotoMenu.bind(this)}>
-          <Text style={{color: 'white'}}>BACK</Text>
-        </TouchableHighlight>
-        
-        
-        {this.props.totalTime > 0 ? (
-            <Animated.Image
-            source={require('./images/time.png')} 
-            style={this.getTimeStyle(x)} >
-          </Animated.Image>
-          ) : null}
+          <View style={styles.footer}>
+            <TouchableHighlight onPress={() => this.gotoLevels()} 
+                underlayColor="transparent"
+                style={styles.btnBack}>
+                <Image source={require('./images/btn_back_sm.png')} style={styles.imageBtn} />
+            </TouchableHighlight>
+
+            <TouchableHighlight onPress={() => this.reloadGame()} 
+                underlayColor="transparent"
+                style={styles.reloadGame}>
+                <Image source={require('./images/btn_reset_sm.png')} style={styles.imageBtn} />
+            </TouchableHighlight>
+
+            {this.props.totalTime > 0 ? (
+              <View style={styles.timeBox} >
+                <Time timeLeft={this.state.timeLeft}  />
+                </View>
+            ) : <View style={styles.timeBox} ></View>}
+
+          </View>
+        </View>
       </View>  
     );
   }
@@ -142,14 +178,28 @@ class Game extends Component {
 const styles = StyleSheet.create({
   main: {
     flex:1,
-    backgroundColor: '#5a7487',
-    zIndex: 1
+    backgroundColor: 'black'
   },
+  ads: {
+      backgroundColor: 'green',
+      width: 468,
+      height: 60,
+      position: 'absolute',
+      zIndex: 3,
+      top: 0,
+      left: (CON.WIDTH - 468) /2
+  },
+  container: {
+    //backgroundColor: 'blue',
+    width: CON.WIDTH,
+    top: 60,
+    height: CON.HEIGHT - 60
+  }, 
   backgroundImage: {
     resizeMode: 'stretch',
-    zIndex: 0,
-    width: winWidth,
-    height: CON.HEIGHT
+    zIndex: 2,
+    width: CON.WIDTH,
+    height: CON.HEIGHT - 80
   },  
   backdrop:	{
 		flex:	0,
@@ -158,19 +208,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: CON.TOP,
     marginLeft: 0,
-    zIndex:5
+    zIndex: 2
   },
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  footer: {
+    position: 'absolute',
+    zIndex: 4,
+    top: CON.WIDTH + CON.CELL,
+    width: CON.WIDTH - CON.CELL,
+    left: CON.CELL/2,
+    //backgroundColor: 'green'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    zIndex: 5
+  timeBox:{
+    top: 0,
+    left: CON.WIDTH - CON.CELL*2,
+    width: CON.CELL,
+    height: CON.CELL,
+    //backgroundColor: 'red'
   },
   buttons : {
     backgroundColor: '#246dd5', 
@@ -182,9 +235,32 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 300
   },
-  time: {
+  btnBack: {
     position: 'absolute',
-    top: CON.HEIGHT - CON.OFFSET_TOP*3
+    width: CON.CELL,
+    zIndex: 5,
+    top: 0,
+    left: 0,
+    //backgroundColor: 'red'
+  },
+  reloadGame: {
+    position: 'absolute',
+    width: CON.CELL,
+    zIndex: 5,
+    top: 0,
+    left: CON.CELL*1.2,
+    //backgroundColor: 'red'
+  },
+  imageBtn: {
+      width: CON.CELL,
+      height: CON.CELL,
+      resizeMode: 'contain',
+  },
+  time: {
+    width: 25,
+    height:25,
+    position: 'absolute',
+    top: CON.HEIGHT - CON.OFFSET_TOP*4 +  CON.CELL/4
   }
 });
 

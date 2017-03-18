@@ -27,7 +27,9 @@ class Finish extends Component {
   gotoGame() {
     this.props.navigator.push({
         id: 'Game',
-        totalTime: this.props.totalTime,
+        passProps: {
+          totalTime: this.props.totalTime
+        },
         sceneConfig: Navigator.SceneConfigs.FloatFromRight
     });
  }

@@ -9,34 +9,37 @@ import {
 const _ = require('lodash');
 
 import Viewport from './viewport'
-const Values = require('./values');
-
+const TableMatrix = require('./matrix');
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
-var Matrix = new Values();
-const tiles = Matrix.getTiles();
+var Matrix = new TableMatrix();
+//const tiles = Matrix.getTiles();
 
 const winWidth = CON.WIDTH;
 const cell = CON.CELL;
 const top = CON.OFFSET_TOP;
     
-console.log('---------TILES--------------');
-console.log(tiles);
+//console.log('---------TILES--------------');
+//console.log(tiles);
 
 export default class Collection extends Component {
   constructor(props) {
     super(props);
+    Matrix.createTiles();
+    console.log('..........................');
     this.wonGame = this.wonGame.bind(this);
     this.state = {
-      state: 1
-      };
-    this.handleColision.bind(this);
+      tiles: Matrix.getTiles()
+    };
+    this.handleColision.bind(this); 
   }
 
-  shouldComponentUpdate() {
+
+  shouldComponentUpdate (nextProps, nextState) {
     return false;
   }
+  
 
   wonGame() {
     console.log('+++++++++++++++++WONGAME------++++++++++++++++++++++++');
@@ -64,7 +67,7 @@ export default class Collection extends Component {
   }
   
   render() {
-    var fichas = tiles.map((pos, index) => {      
+    var fichas = this.state.tiles.map((pos, index) => {      
           return (<Viewport key={pos.id} position={pos} onColision={this.handleColision.bind(this)}/>)
     });
     return (

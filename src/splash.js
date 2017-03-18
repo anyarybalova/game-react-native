@@ -27,11 +27,42 @@ class SplashPage extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#246dd5', alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{color: 'white', fontSize: 34,}}>Game</Text>
+      <View style={styles.container}>
+        <View style={styles.logoBox}>
+          <Image source={require('./images/logo_text1.png')} style={styles.text1}/>
+          <Image source={require('./images/barco.png')} style={styles.logo}/>  
+          <Image source={require('./images/logo_text2.png')} style={styles.text2}/>
+        </View>
+        
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#246dd5',
+  },
+  logo :{
+    zIndex: 5,
+    width: CON.CELL*3,
+    height: CON.CELL*3.5
+  },
+  text1: {
+    zIndex: 10,
+    top:  CON.CELL/1.5,
+    width: CON.CELL*3,
+    height: CON.CELL*1.5
+  },
+  text2: {
+    zIndex: 10,
+    marginTop: - CON.CELL/3,
+    width: CON.CELL*3,
+    height: CON.CELL
+  }
+});
 
 module.exports = SplashPage;

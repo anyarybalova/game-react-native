@@ -11,12 +11,15 @@ function getConstants() {
 	const winHeight = Window.height;
 	Const.WIDTH = winWidth;
 	Const.CELL = cell;
-	Const.TOP = Math.floor(Window.height/6),
+	Const.TOP = cell,
 	Const.OFFSET_LEFT = cell/2;
 	Const.OFFSET_TOP = cell/2;
 	Const.HEIGHT = Window.height;
 	Const.FOOTER = winHeight - winHeight/6;
-	
+	Const.OFFSET_BUTTONS = cell/2 * 3;
+	Const.BTN_WIDTH = winWidth*0.5;
+	Const.ADS_HEIGHT = 60;
+	Const.NUMBERS = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4];
 	return Const;
 }
 

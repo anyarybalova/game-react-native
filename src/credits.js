@@ -11,8 +11,9 @@ import {
 	TouchableHighlight
 } from 'react-native';
 
+const commonSt = require('./styles/common');
 const CntMod = require('./const');
-const CNT = (new CntMod()).CONST;
+const CON = (new CntMod()).CONST;
 
 class Credits extends Component {
   render() {
@@ -32,31 +33,62 @@ class Credits extends Component {
 
   renderScene(route, navigator) {
     return (
-      <View style={styles.container}>
-			  <Text style={{color: 'blue', fontSize: 32 }}>CREDITS</Text>
-        <TouchableHighlight style={{backgroundColor: 'yellow', padding: 10}}
-            onPress={this.gotoMenu.bind(this)}>
-          <Text style={{color: 'white'}}>Credits</Text>
-        </TouchableHighlight>
-      </View>
+      <View style={commonSt.container}>
+            <Image source={require('./images/environment.png')} style={commonSt.envImage} />
+            <View style={styles.texts}>
+              <Text style={[commonSt.text, styles.green]}>Designed and created by:</Text>
+              <Text style={[commonSt.text,styles.textSm]}>Anya Rybalova</Text>
+              <Text style={[commonSt.text, styles.green]}>Your comments are welcome.</Text>
+              <Text style={[commonSt.text, styles.green]}>Thank you for playing my game.</Text>
+              <Text style={[commonSt.text,styles.textSm]}>anya.rybalova@gmail.com</Text>
+            </View>
+            <View style={styles.logoBox}>
+              <Image source={require('./images/barco.png')} style={styles.logo}/>  
+            </View>
+            <TouchableHighlight onPress={() => this.gotoMenu()} underlayColor="transparent" style={commonSt.btnBack}>
+              <Image source={require('./images/btn_back_sm.png')} style={commonSt.imageBack} />
+          </TouchableHighlight>
+        </View>
     );
   }
 
 }
 
-
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#5a7487',
+  texts: {
+    zIndex: 5,
+		position: 'absolute',
+		top: CON.CELL*2,
+		left: CON.CELL/4,
+    width: CON.WIDTH - CON.CELL/2
   },
-  bottons : {
-		backgroundColor: 'blue', 
-		padding: 10
+  textSm: {
+    textAlign: 'center',
+    marginBottom: CON.CELL/3
+  },
+  green: {
+    textAlign: 'center',
+    color: '#00FFFF',
+    paddingBottom: CON.CELL/20,
+    fontSize: CON.CELL/4.5
+  },
+  logoBox: {
+    zIndex: 5,
+		position: 'absolute',
+		top: CON.CELL*4.2,
+		left: CON.WIDTH/2 - CON.CELL*1.5,
+    width: CON.CELL*3,
+    height: CON.CELL*3.5,
+    //backgroundColor: 'red',
+  },
+  logo :{
+    zIndex: 10,
+    resizeMode: 'center',
+    width: CON.CELL*3,
+    height: CON.CELL*3.5
   }
 });
+
 
 module.exports = Credits;
 

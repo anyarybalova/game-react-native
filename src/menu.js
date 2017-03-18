@@ -7,21 +7,19 @@ import {
   Image,
   Button,
   Navigator,
-  TouchableHighlight
+  TouchableHighlight,
+  BackAndroid,
+  Animated
 } from 'react-native';
 
 
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
+const commonSt = require('./styles/common');
 
 export default class Manu extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      page: 1
-    };
-    
   }
 
  
@@ -47,6 +45,10 @@ gotoCredits() {
     });
 }
 
+exitApp() {
+    BackAndroid.exitApp();
+}
+
 render() {
     return (
       <Navigator
@@ -58,41 +60,40 @@ render() {
       
 renderScene() {
     return (
-        <View style={styles.container}>
+        <View style={commonSt.container}>
+            <Image source={require('./images/environment.png')} 
+                style= {commonSt.envImage}/>
+            
+            <View style={commonSt.btnGroups}>
+                <TouchableHighlight onPress={() => this.gotoLevels()}
+                    underlayColor="transparent"
+                    style={commonSt.btn}>
+                    <Animated.Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
+                        <Text style={commonSt.btnText}>Play Game</Text>
+                    </Animated.Image>
+                </TouchableHighlight>
 
-            <TouchableHighlight style={styles.buttons}
-                onPress={this.gotoLevels.bind(this)}>
-                <Text style={{color: 'white'}}>PLAY GAME</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.buttons}
-                onPress={this.gotoCredits.bind(this)}>
-                <Text style={{color: 'white'}}>CREDITS</Text>
-            </TouchableHighlight>
+                <TouchableHighlight onPress={() => this.gotoCredits()}
+                    underlayColor="transparent"
+                    style={commonSt.btn}>
+                    <Animated.Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
+                        <Text style={commonSt.btnText}>Credits  </Text>
+                    </Animated.Image>
+                </TouchableHighlight>
 
-            <TouchableHighlight style={styles.buttons}
-                onPress={this.gotoInstructions.bind(this)}>
-                <Text style={{color: 'white'}}>INSTRUCTIONS</Text>
+                <TouchableHighlight onPress={() => this.gotoInstructions()}
+                    underlayColor="transparent"
+                    style={commonSt.btn}>
+                    <Animated.Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
+                        <Text style={commonSt.btnText}>   Instructions</Text>
+                    </Animated.Image>
+                </TouchableHighlight>
+            </View>
+            <TouchableHighlight onPress={() => this.exitApp()} underlayColor="transparent" style={commonSt.btnBack}>
+                <Image source={require('./images/btn_back_sm.png')} style={commonSt.imageBack} />
             </TouchableHighlight>
         </View>  
         );    
     }
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor:'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backgroundImage: {
-    resizeMode: 'cover',
-  },  
-  buttons : {
-    backgroundColor: '#246dd5', 
-    padding: 10,
-    margin: 15
-  }
-});
 
