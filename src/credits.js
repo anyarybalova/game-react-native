@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
-  Button,
-  Dimensions,
   Navigator,
 	TouchableHighlight
 } from 'react-native';
@@ -39,8 +36,8 @@ class Credits extends Component {
               <Text style={[commonSt.text, styles.green]}>Designed and created by:</Text>
               <Text style={[commonSt.text,styles.textSm]}>Anya Rybalova</Text>
               <Text style={[commonSt.text, styles.green]}>Your comments are welcome.</Text>
-              <Text style={[commonSt.text, styles.green]}>Thank you for playing my game.</Text>
               <Text style={[commonSt.text,styles.textSm]}>anya.rybalova@gmail.com</Text>
+              <Text style={[commonSt.text, styles.green]}>Thank you for playing my game.</Text>
             </View>
             <View style={styles.logoBox}>
               <Image source={require('./images/barco.png')} style={styles.logo}/>  
@@ -75,11 +72,10 @@ const styles = StyleSheet.create({
   logoBox: {
     zIndex: 5,
 		position: 'absolute',
-		top: CON.CELL*4.2,
+		top: CON.CELL*4,
 		left: CON.WIDTH/2 - CON.CELL*1.5,
     width: CON.CELL*3,
     height: CON.CELL*3.5,
-    //backgroundColor: 'red',
   },
   logo :{
     zIndex: 10,

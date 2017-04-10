@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
   Navigator,
   TouchableHighlight,
-  Animated,
-  Easing
+  NetInfo
 } from 'react-native';
 
-/*import {
-  Timer
-} from 'react-native-timer'
-*/
+import { 
+  AdMobBanner, 
+  AdMobInterstitial, 
+  PublisherBanner,
+  AdMobRewarded
+} from 'react-native-admob'
+
 const Timer = require('react-native-timer');
 const _ = require('lodash');
 
@@ -22,10 +23,10 @@ import Collection from './collection'
 import Viewport from './viewport'
 import Levels from './levels';
 import Time from './time';
-//import { findNodeHandle } from 'react-native';
 
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
+const commonSt = require('./styles/common');
 const winWidth = CON.WIDTH;
 const start = CON.CELL*2/3;
 const finish = CON.WIDTH - CON.CELL;
@@ -34,18 +35,67 @@ class Game extends Component {
   constructor(props) {
     super(props);
     
+    this.imageWidth = ConstModule.getImageWidth();
+
+    const difficultLevel = [{
+        transform: {rotateX: '0deg'}, order: [2,3,4,1]
+      },{
+        transform: {rotateX: '180deg'},
+        order: [4,1,2,3]
+      },{
+        transform: {rotateY: '180deg'},
+        order: [3,2,1,4]
+      },{
+        transform: {rotateZ: '180deg'},
+          order: [1,4,3,2]
+    }];
+    if (this.props.type === 'Hard'){
+      this.order = _.first(_.shuffle(difficultLevel));
+      this.imgEnv = 'zones';
+    } else {
+      this.imgEnv = 'base';
+      this.order = {
+        transform: {rotateX: '0deg'},
+        order: []
+      };
+    }
+    
     this.state = {
       width: 600,
       height: 600,
-      animation: true,
-      timeLeft: this.props.totalTime//,
-     // types: _.shuffle(CON.NUMBERS)
+      timeLeft: this.props.totalTime,
+      isConnected: null
     };
+    this._handleConnectivityChange = this._handleConnectivityChange.bind(this);
   }
 
 
   shouldComponentUpdate (nextProps, nextState) {
     return true;
+  }
+
+  componentDidMount() {      
+    NetInfo.isConnected.addEventListener(
+        'change',
+        this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+        (isConnected) => { this.setState({isConnected}); }
+    );
+    if (this.props.totalTime > 0) {
+      Timer.setInterval(this, 'tick', this.tick.bind(this), 1000);
+    }
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+        'change',
+        this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange(isConnected) {
+    this.setState({isConnected,});
   }
 
   tick() {
@@ -61,25 +111,18 @@ class Game extends Component {
 
 
   reloadGame() {
-    //this.setState({types: _.shuffle(CON.NUMBERS)});
-    //this.setState({timeLeft: this.props.totalTime});
     Timer.clearInterval(this);
     this.props.navigator.resetTo({
         id: 'Game',
         passProps: {
-            totalTime: this.props.totalTime
+            totalTime: this.props.totalTime,
+            type: this.props.type
         },
         sceneConfig: Navigator.SceneConfigs.FadeAndroid,
     });
   }
   
 
-  componentDidMount () {
-    const self = this;
-    if (this.props.totalTime > 0) {
-      Timer.setInterval(this, 'tick', this.tick.bind(self), 1000);
-    }
-  }
   
   render() {
     return (
@@ -92,7 +135,6 @@ class Game extends Component {
 
 
 	gotoLevels() {
-    this.setState({animation: false});
     Timer.clearInterval(this);
     this.props.navigator.push({
         id: 'Levels',
@@ -101,19 +143,39 @@ class Game extends Component {
 	}
 
   gotoFinishPage(status) {
-    if (this.state.animation) {
-      this.props.navigator.push({
-          id: 'Finish',
-          passProps: {
-            status: status,
-            totalTime: this.props.totalTime
-          },
-          sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
-      });
-    }
+    Timer.clearInterval(this);
+    this.props.navigator.push({
+        id: 'Finish',
+        passProps: {
+          status: status,
+          totalTime: this.props.totalTime,
+          type: this.props.type,
+          timeLeft: this.state.timeLeft
+        },
+        sceneConfig: Navigator.SceneConfigs.FloatFromLeft,
+    });
+  }
+
+  getStyle(transform) {
+      return [
+          styles.imgBackdrop, {
+            width: this.imageWidth,
+            height: this.imageWidth,
+            transform: [transform]
+          }];
+  }
+
+
+  getStyleContainer(transform) {
+      return [
+          styles.backdrop, {
+            width: this.imageWidth,
+            height: this.imageWidth
+      }];
   }
 
   measureView(event) {
+    
     this.setState({
       width : event.nativeEvent.layout.width
     });
@@ -122,31 +184,26 @@ class Game extends Component {
     });
   }
 
+  bannerError() {
+    console.log('banner error');
+ }
+
+
 
   renderScene() {
-      /*var x = this.timeValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [start, finish]
-      });
-
-      var color = this.timeValue.interpolate({
-        inputRange: [0, 0.7, 0.85],
-        outputRange: ['rgba(0, 255, 0, 1)', 'rgba(0,255, 0, 1)', 'rgba(255, 0, 0, 1)']
-      });
-      */
     return (
-      <View style={styles.main}>
-        <View style={styles.ads}></View>
-        <View style={styles.container}>
-          <Image source={require('./images/environment.png')} style={styles.backgroundImage} />
+        <View style={commonSt.container}>
+          <Image source={require('./images/environment.png')} style={commonSt.envImage} />
           
-          <Image onLayout={(event) => this.measureView(event)} ref="container" 
-              source={require('./images/base_v7.png')}
-                  style={styles.backdrop}>
-              <View>
-                <Collection onWin={this.gotoFinishPage.bind(this)}/>
-              </View>
-          </Image>
+          
+            <View style={styles.backdrop}>
+              <Image onLayout={(event) => this.measureView(event)} ref="container" 
+              source={{uri: this.imgEnv}}
+                  style={this.getStyle(this.order.transform)}></Image>
+                  { this.state.isConnected ?
+                    <Collection onWin={this.gotoFinishPage.bind(this)} type={this.props.type} order={this.order.order}/>
+                    : <View></View>}
+            </View>
 
           <View style={styles.footer}>
             <TouchableHighlight onPress={() => this.gotoLevels()} 
@@ -169,61 +226,52 @@ class Game extends Component {
 
           </View>
         </View>
-      </View>  
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   main: {
     flex:1,
     backgroundColor: 'black'
   },
-  ads: {
-      backgroundColor: 'green',
-      width: 468,
-      height: 60,
-      position: 'absolute',
-      zIndex: 3,
-      top: 0,
-      left: (CON.WIDTH - 468) /2
-  },
   container: {
-    //backgroundColor: 'blue',
     width: CON.WIDTH,
-    top: 60,
-    height: CON.HEIGHT - 60
+    height: CON.HEIGHT - CON.ADS_HEIGHT,
+    //backgroundColor: 'green'
   }, 
   backgroundImage: {
     resizeMode: 'stretch',
     zIndex: 2,
     width: CON.WIDTH,
-    height: CON.HEIGHT - 80
+    height: CON.HEIGHT - CON.ADS_HEIGHT
   },  
   backdrop:	{
-		flex:	0,
-    width: winWidth,
-    height: winWidth,
+    width: CON.imageWidth,
+    height: CON.imageWidth,
     position: 'absolute',
-    top: CON.TOP,
-    marginLeft: 0,
-    zIndex: 2
+    top: CON.HEIGHT/7.5,
+    marginLeft: (CON.WIDTH - CON.imageWidth)/2,
+    zIndex: 3,
+  },
+  imgBackdrop:	{
+    position: 'absolute',
+    resizeMode: 'contain',
+    width: CON.imageWidth,
+    height: CON.imageWidth
   },
   footer: {
     position: 'absolute',
     zIndex: 4,
-    top: CON.WIDTH + CON.CELL,
+    top: CON.TOP_BACK,
     width: CON.WIDTH - CON.CELL,
     left: CON.CELL/2,
-    //backgroundColor: 'green'
   },
   timeBox:{
     top: 0,
     left: CON.WIDTH - CON.CELL*2,
     width: CON.CELL,
     height: CON.CELL,
-    //backgroundColor: 'red'
   },
   buttons : {
     backgroundColor: '#246dd5', 
@@ -241,7 +289,6 @@ const styles = StyleSheet.create({
     zIndex: 5,
     top: 0,
     left: 0,
-    //backgroundColor: 'red'
   },
   reloadGame: {
     position: 'absolute',
@@ -249,7 +296,6 @@ const styles = StyleSheet.create({
     zIndex: 5,
     top: 0,
     left: CON.CELL*1.2,
-    //backgroundColor: 'red'
   },
   imageBtn: {
       width: CON.CELL,

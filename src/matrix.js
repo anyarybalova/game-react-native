@@ -43,7 +43,6 @@ function initicialization() {
 
 function createRandomNumbers() {
 	var numbers = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4];
-	//sort numbers
 	return  numbers;
 };
 
@@ -54,15 +53,11 @@ function mixNumbers(numbers) {
 function getTypes() {
 	var nums = createRandomNumbers();
 	return mixNumbers(nums);
-	//return this.types;
 }
 
 	 
 var Matrix = function() {
 	this.values;
-	/*console.log('-----------VALUES:---------');
-	console.log(this.values);
-	this.tiles = createTiles(this.values);*/
 	this.tiles;
 	this.types;
 }
@@ -84,15 +79,10 @@ Matrix.prototype.addTiles = function(values) {
 	return tiles;
 }
 
-Matrix.prototype.clean = function() {
-	//this.tiles = [];
-}
-
 
 Matrix.prototype.getTypes = function() {
 	var numbers = [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4];
 	return _.shuffle(numbers);
-	//return this.types;
 }
 
 Matrix.prototype.createTiles = function(){
@@ -108,21 +98,14 @@ Matrix.prototype.getTiles = function() {
 Matrix.prototype.changePosition = function(id, dir) {
 	const tiles = this.getTiles();
 	let tile;
-	console.log('////////////////////////////////////////');
-	console.log(this.tiles);
 	tile = _.find(this.tiles, function(n) {
-			return n.id === id
-		});
+		return n.id === id
+	});
 
-	console.log('---------------- tile: ----------------------');
-	console.log(tile);
-	//console.log(this.values);
 	var newI = tile.i + dir.x;
 	var newJ = tile.j + dir.y;
 	if (newI >= 0 && newI <=4 && newJ >= 0 && newJ >= 0) {
-		console.log(this.values);
 		var valueTo = this.values[newI][newJ];
-		console.log(valueTo);
 		if (valueTo === -1) {
 			const i = tile.i;
 			const j = tile.j;
@@ -147,6 +130,19 @@ Matrix.prototype.checkWin = function() {
 				if ((val[3][3] === val[3][4]) && (val[3][3] === val[4][3]) && (val[3][3] === val[4][4])) {
 					status = true;
 				}
+			}
+		}
+	}
+	return status;
+};
+
+Matrix.prototype.checkWinWithOrder = function(order) {
+	const val = this.values;
+	let status = false;
+	if (this.checkWin()) {
+		if ((val[0][0] === order[0]) && (val[0][3] === order[1])) {
+			if ((val[3][0] === order[2]) && (val[3][3] === order[3])) {
+				status = true;
 			}
 		}
 	}

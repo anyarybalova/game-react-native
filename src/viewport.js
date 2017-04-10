@@ -1,4 +1,4 @@
-'use	strict';
+'use strict';
 import React, { Component } from 'react';
 import {
     StyleSheet,
@@ -23,7 +23,10 @@ export default class Viewport extends Component {
                 x: this.props.position.top, 
                 y: this.props.position.left})
         };
-        let mover = Animated.event([ null, { dx: this.state.pan.x, dy: this.state.pan.y }]) ;
+        let mover = Animated.event([null, 
+            {dx: this.state.pan.x, 
+            dy: this.state.pan.y 
+        }]) ;
         
         this.panResponder = PanResponder.create({
             componentWillMount: function() {
@@ -39,22 +42,16 @@ export default class Viewport extends Component {
             },
            
             onPanResponderMove: (e, gesture) => {
-                var pos = this.state.pan.getLayout(); 
-                //console.log(gesture.moveX, gesture.moveY);
-                //this.state.pan.setValue({x: pos.x + 50, y: pos.y});
-                //console.log(gesture.dx, gesture.dy);
+                var pos = this.state.pan.getLayout();
                 var CONFIG = {tension: 2, friction: 3};
-                //console.log(gesture);
-                
-                
             },
+
             onPanResponderRelease: (e, gesture) => {
                 this.state.pan.flattenOffset();
                 let valueX = 0;
                 let valueY = 0;
                 let dirX = 0;
                 let dirY = 0;
-                console.log(gesture.dy, gesture.dx);
                 if (Math.abs(gesture.dx) > Math.abs(gesture.dy)) {
                     if (gesture.dx > 0) {
                         valueX = STEP;
@@ -85,10 +82,7 @@ export default class Viewport extends Component {
                 }
             }
         });
-
-        
     }
-
 
     getStyle() {
         return [

@@ -5,9 +5,7 @@ import {
   Text,
   View,
   Image,
-  Navigator,
-  TouchableHighlight,
-  Button
+  Navigator
 } from 'react-native';
 
 
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#246dd5',
+    backgroundColor: '#045FB4',
   },
   logo :{
     zIndex: 5,

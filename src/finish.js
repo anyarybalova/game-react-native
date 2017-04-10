@@ -5,15 +5,14 @@ import {
   Text,
   View,
   Image,
-  Dimensions,
   Navigator,
-  TouchableHighlight,
-  Button
+  TouchableHighlight
 } from 'react-native';
 
 
 const CntMod = require('./const');
-const CNT = (new CntMod()).CONST;
+const CON = (new CntMod()).CONST;
+const commonSt = require('./styles/common');
 
 class Finish extends Component {
   constructor(props) {
@@ -28,7 +27,8 @@ class Finish extends Component {
     this.props.navigator.push({
         id: 'Game',
         passProps: {
-          totalTime: this.props.totalTime
+          totalTime: this.props.totalTime,
+          type: this.props.type
         },
         sceneConfig: Navigator.SceneConfigs.FloatFromRight
     });
@@ -44,56 +44,58 @@ class Finish extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#246dd5', alignItems: 'center', justifyContent: 'center'}}>
-        { this.props.status === 'lost' ?
-            <Text style={{color: 'white', fontSize: 34,}}>You lost!</Text>
-            :
-            <Text style={{color: 'white', fontSize: 34,}}>You won!</Text>
-        }
-        <TouchableHighlight style={styles.buttons}
-            onPress={this.gotoGame.bind(this)}>
-          <Text style={{color: 'blue'}}>Play again</Text>
-        </TouchableHighlight>
+      <View style={commonSt.container}>
+            <Image source={require('./images/environment.png')} 
+                style= {commonSt.envImage}/>
+            <View style={commonSt.btnGroups}>
+              { this.props.status === 'lost' ?
+              <Text style={[commonSt.text, styles.resultText]}>You lost...</Text>
+              :
+              <View>
+                <Text style={[commonSt.text, styles.resultText]}> You won!</Text>
+                <Text style={[commonSt.text, styles.textScore]}>Your time:</Text>
+                <Text style={[commonSt.text, styles.textScore, styles.lastScore]}>
+                    {this.props.timeLeft}</Text>
+              </View>
+              }
+                <TouchableHighlight onPress={this.gotoGame.bind(this)}
+                    underlayColor="transparent"
+                    style={commonSt.btn}>
+                    <Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
+                        <Text style={commonSt.btnText}>Play again</Text>
+                    </Image>
+                </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttons}
-            onPress={this.gotoMenu.bind(this)}>
-          <Text style={{color: 'blue'}}>Menu</Text>
-        </TouchableHighlight>
-      </View>
+                <TouchableHighlight onPress={() => this.gotoMenu()}
+                    underlayColor="transparent"
+                    style={commonSt.btn}>
+                    <Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
+                        <Text style={commonSt.btnText}>Menu     </Text>
+                    </Image>
+                </TouchableHighlight>
+            </View>
+        </View>
     );
-  }s
+  }
 }
 
 const styles = StyleSheet.create({
-  main: {
-    flex:1,
-    backgroundColor: '#5a7487',
-    zIndex: 1
-  },
-  backdrop:	{
-		flex:	0,
-    position: 'absolute',
-    marginLeft: 0,
-    zIndex:5
-  },
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
+  resultText: {
     textAlign: 'center',
-    margin: 10,
+    fontSize: CON.CELL/1.5,
+    marginRight: CON.CELL/4,
+    marginBottom: CON.CELL/2,
+		textShadowColor: 'rgba(0, 0, 0, 1)',
+		textShadowOffset: {width: 2, height: 2}
   },
-  buttons : {
-    backgroundColor: '#fff', 
-    padding: 10,
-    margin: 15,
-    width: 200,
-    alignItems: 'center'
+  textScore: {
+    textAlign: 'center',
+    fontSize: CON.CELL/3
   },
+  lastScore: {
+    marginBottom: CON.CELL/1.6
+  }
+
 });
 
 module.exports = Finish;

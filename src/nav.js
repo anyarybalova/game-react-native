@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
-  Image,
-  Dimensions,
   Navigator,
-  TouchableHighlight,
   TouchableOpacity,
-  Button
 } from 'react-native';
+
+import { 
+  AdMobBanner
+} from 'react-native-admob'
 
 import Game from './game';
 import Menu from './menu';
@@ -21,13 +20,27 @@ import Finish from './finish';
 import Levels from './levels';
 
 
+
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
 export default class test03 extends Component {
+
+  bannerError() {
+    console.log('banner error');
+  }
   render() {
     return (
-      <Navigator
+      <View style={{flex:1, backgroundColor: 'white'}}>
+        <View style={styles.ads}>
+          <AdMobBanner
+            bannerSize="banner"
+            adUnitID="ca-app-pub-6746515493882427/7348826390"
+            testDeviceID="EMULATOR"
+            didFailToReceiveAdWithError={this.bannerError.bind(this)} />
+        </View>
+        <Navigator
+          style={styles.content}
           initialRoute={{id: 'SplashPage'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
@@ -36,6 +49,7 @@ export default class test03 extends Component {
             }
             return Navigator.SceneConfigs.FloatFromRight;
           }} />
+      </View>
     );
   }
   
@@ -79,8 +93,7 @@ export default class test03 extends Component {
   noRoute(navigator) {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-            onPress={() => this.gotoNext.bind(this)}>
+        <TouchableOpacity onPress={() => this.gotoNext.bind(this)}>
           <Text style={{color: 'red', fontWeight: 'bold'}}>  404 - Page not found</Text>
         </TouchableOpacity>
       </View>
@@ -94,5 +107,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  content: {
+    width: CON.WIDTH,
+    height: CON.HEIGHT - CON.ADS_HEIGHT*1.5,
+    left: 0,
+    position: 'absolute',
+    zIndex: 1,
+    top: CON.ADS_HEIGHT
+  },
+  ads: {
+      backgroundColor: 'black',
+      width: CON.ADS_WIDTH,
+      height: CON.ADS_HEIGHT,
+      left: (CON.WIDTH - CON.ADS_WIDTH)/2,
+      position: 'absolute',
+      zIndex: 1,
+      top: 0
   }
 });

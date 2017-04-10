@@ -21,7 +21,7 @@ const CommonStyles = StyleSheet.create({
   btnGroups: {
 		zIndex: 5,
 		position: 'absolute',
-		top: CELL*2.5,
+		top: CON.TOP,
 		left: CELL,
 		width: CELL*4
   },
@@ -42,22 +42,22 @@ const CommonStyles = StyleSheet.create({
 	  fontSize: CELL/4,
 	  paddingLeft: CELL/2,
 	  fontFamily: 'OCRAExtendedRegular',
-		shadowColor: 'rgba(150, 150, 150, 1)',
-		shadowOffset: {width: 4, height: 3}
+		textShadowColor: 'rgba(0, 0, 0, 1)',
+		textShadowOffset: {width: 2, height: 2}
   },
 	text: {
 		color: 'white',
 	  fontSize: CELL/4,
 	  fontFamily: 'OCRAExtendedRegular',
-		shadowColor: 'rgba(150, 150, 150, 1)',
-		shadowOffset: {width: 3, height: 3}
+		textShadowColor: 'rgba(0, 0, 0, 1)',
+		textShadowOffset: {width: 2, height: 2}
 	},
   btnBack: {
 		position: 'absolute',
 		width: CELL,
 		zIndex: 5,
-		top: CON.HEIGHT - CELL*2,
-		left: CELL/1.8
+		top: CON.TOP_BACK,
+		left: CELL/1.5
   },
   imageBack: {
 	  width: CELL,

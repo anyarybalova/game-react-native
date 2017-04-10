@@ -8,13 +8,12 @@ import {
   Button,
   Dimensions,
   Navigator,
-TouchableHighlight
+	TouchableHighlight
 } from 'react-native';
 
-
+const commonSt = require('./styles/common');
 const CntMod = require('./const');
-const CNT = (new CntMod()).CONST;
-
+const CON = (new CntMod()).CONST;
 
 class Instructions extends Component {
   render() {
@@ -26,39 +25,52 @@ class Instructions extends Component {
     );
   }
 
-    gotoMenu() {
-        this.props.navigator.jumpBack({
-        sceneConfig: Navigator.SceneConfigs.FloatFromRight,
-        });
-    }
+	gotoMenu() {
+    this.props.navigator.jumpBack({
+      sceneConfig: Navigator.SceneConfigs.FloatFromRight,
+    });
+	}
 
   renderScene(route, navigator) {
     return (
-      <View style={styles.container}>
-        <Text style={{color: 'blue', fontSize: 32 }}>INSTRUCTIONS</Text>
-        <TouchableHighlight style={{backgroundColor: 'yellow', padding: 10}}
-            onPress={this.gotoMenu.bind(this)}>
-          <Text style={{color: 'white'}}>BACK</Text>
-        </TouchableHighlight>
-      </View>
+      <View style={commonSt.container}>
+            <Image source={require('./images/environment.png')} style={commonSt.envImage} />
+            <View style={styles.texts}>
+              <Text style={[commonSt.text, styles.textBigger]}>The main objective is to situate tiles by color in any cuadrant.</Text>
+              <Image source={require('./images/instructions.png')} style={styles.logo} />            
+              <Text style={[commonSt.text, styles.textBigger]}>In the hard level it must match with the color of the quadrant.</Text>
+            </View>
+            <TouchableHighlight onPress={() => this.gotoMenu()} underlayColor="transparent" style={commonSt.btnBack}>
+              <Image source={require('./images/btn_back_sm.png')} style={commonSt.imageBack} />
+          </TouchableHighlight>
+        </View>
     );
   }
 
 }
 
-
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#5a7487',
+  texts: {
+    zIndex: 5,
+		position: 'absolute',
+		top: CON.CELL,
+		left: CON.CELL/4,
+    width: CON.WIDTH - CON.CELL/2, 
+    padding: CON.CELL/2
   },
-  bottons : {
-		backgroundColor: 'blue', 
-		padding: 10
+  textBigger: {
+    fontSize: CON.CELL/4
+  },
+  logo :{
+    zIndex: 10,
+    resizeMode: 'center',
+    marginTop: CON.CELL/5,
+    marginBottom: CON.CELL/5,
+    width: CON.CELL*3.2,
+    height: CON.CELL*3.2
   }
 });
+
 
 module.exports = Instructions;
 
