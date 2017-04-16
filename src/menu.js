@@ -14,6 +14,7 @@ const CntMod = require('./const');
 const ConstModule = new CntMod();
 const CON = ConstModule.CONST;
 const commonSt = require('./styles/common');
+const EnvImage = require('./environment');
 
 export default class Manu extends Component {
   constructor(props) {
@@ -36,10 +37,6 @@ gotoInstructions() {
     });
 }
 
-measureView(event) {
-    const width = event.nativeEvent.layout.width;
-    ConstModule.setImageWidth(width);
-}
 
 gotoCredits() {
     this.props.navigator.push({
@@ -63,9 +60,7 @@ render() {
 renderScene() {
     return (
         <View style={commonSt.container}>
-            <Image onLayout={(event) => this.measureView(event)}
-                 source={require('./images/environment.png')} 
-                style= {commonSt.envImage}/>
+            <EnvImage/>
             
             <View style={commonSt.btnGroups}>
                 <TouchableHighlight onPress={() => this.gotoLevels()}

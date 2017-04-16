@@ -24,18 +24,15 @@ import Viewport from './viewport'
 import Levels from './levels';
 import Time from './time';
 
-const CntMod = require('./const');
-const CON = (new CntMod()).CONST;
 const commonSt = require('./styles/common');
+const CntMod = require('./const');
+const EnvImage = require('./environment');
+const CON = (new CntMod()).CONST;
 const winWidth = CON.WIDTH;
-const start = CON.CELL*2/3;
-const finish = CON.WIDTH - CON.CELL;
 
 class Game extends Component {
   constructor(props) {
     super(props);
-    
-    this.imageWidth = ConstModule.getImageWidth();
 
     const difficultLevel = [{
         transform: {rotateX: '0deg'}, order: [2,3,4,1]
@@ -159,20 +156,10 @@ class Game extends Component {
   getStyle(transform) {
       return [
           styles.imgBackdrop, {
-            width: this.imageWidth,
-            height: this.imageWidth,
             transform: [transform]
           }];
   }
 
-
-  getStyleContainer(transform) {
-      return [
-          styles.backdrop, {
-            width: this.imageWidth,
-            height: this.imageWidth
-      }];
-  }
 
   measureView(event) {
     
@@ -193,9 +180,7 @@ class Game extends Component {
   renderScene() {
     return (
         <View style={commonSt.container}>
-          <Image source={require('./images/environment.png')} style={commonSt.envImage} />
-          
-          
+          <EnvImage />
             <View style={styles.backdrop}>
               <Image onLayout={(event) => this.measureView(event)} ref="container" 
               source={{uri: this.imgEnv}}
@@ -247,18 +232,18 @@ const styles = StyleSheet.create({
     height: CON.HEIGHT - CON.ADS_HEIGHT
   },  
   backdrop:	{
-    width: CON.imageWidth,
-    height: CON.imageWidth,
+    width: winWidth,
+    height: winWidth,
     position: 'absolute',
-    top: CON.HEIGHT/7.5,
-    marginLeft: (CON.WIDTH - CON.imageWidth)/2,
+    top: CON.HEIGHT/8.5,
+    marginLeft: 0,
     zIndex: 3,
   },
   imgBackdrop:	{
     position: 'absolute',
     resizeMode: 'contain',
-    width: CON.imageWidth,
-    height: CON.imageWidth
+    width: winWidth,
+    height: winWidth
   },
   footer: {
     position: 'absolute',

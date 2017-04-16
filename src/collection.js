@@ -72,8 +72,8 @@ let CIRCLE_RADIUS = 36;
 const styles = StyleSheet.create({
   container: {
     zIndex: 2,
-    width: CON.imageWidth,
-    height: CON.imageWidth,
+    width: CON.WIDTH,
+    height: CON.WIDTH,
     //marginTop: - CON.CELL/30
     
   }

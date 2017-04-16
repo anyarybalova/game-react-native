@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 const commonSt = require('./styles/common');
+const EnvImage = require('./environment');
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
@@ -31,7 +32,7 @@ class Credits extends Component {
   renderScene(route, navigator) {
     return (
       <View style={commonSt.container}>
-            <Image source={require('./images/environment.png')} style={commonSt.envImage} />
+            <EnvImage/>
             <View style={styles.texts}>
               <Text style={[commonSt.text, styles.green]}>Designed and created by:</Text>
               <Text style={[commonSt.text,styles.textSm]}>Anya Rybalova</Text>

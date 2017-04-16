@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 const commonSt = require('./styles/common');
+const EnvImage = require('./environment');
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
@@ -34,7 +35,7 @@ class Instructions extends Component {
   renderScene(route, navigator) {
     return (
       <View style={commonSt.container}>
-            <Image source={require('./images/environment.png')} style={commonSt.envImage} />
+            <EnvImage/>
             <View style={styles.texts}>
               <Text style={[commonSt.text, styles.textBigger]}>The main objective is to situate tiles by color in any cuadrant.</Text>
               <Image source={require('./images/instructions.png')} style={styles.logo} />            

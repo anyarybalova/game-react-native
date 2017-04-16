@@ -31,7 +31,7 @@ export default class test03 extends Component {
   }
   render() {
     return (
-      <View style={{flex:1, backgroundColor: 'white'}}>
+      <View style={styles.container}>
         <View style={styles.ads}>
           <AdMobBanner
             bannerSize="banner"
@@ -104,13 +104,11 @@ export default class test03 extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'black'
   },
   content: {
     width: CON.WIDTH,
-    height: CON.HEIGHT - CON.ADS_HEIGHT*1.5,
+    height: CON.HEIGHT,
     left: 0,
     position: 'absolute',
     zIndex: 1,

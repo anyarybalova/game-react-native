@@ -11,6 +11,7 @@ import {
 
 
 const CntMod = require('./const');
+const EnvImage = require('./environment');
 const CON = (new CntMod()).CONST;
 const commonSt = require('./styles/common');
 
@@ -45,8 +46,7 @@ class Finish extends Component {
   render() {
     return (
       <View style={commonSt.container}>
-            <Image source={require('./images/environment.png')} 
-                style= {commonSt.envImage}/>
+            <EnvImage/>
             <View style={commonSt.btnGroups}>
               { this.props.status === 'lost' ?
               <Text style={[commonSt.text, styles.resultText]}>You lost...</Text>

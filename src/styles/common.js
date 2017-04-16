@@ -9,13 +9,12 @@ const CELL = CON.CELL;
 
 const CommonStyles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: 'black'
+		flex: 1
   },
   envImage: {
-		width: null,
-		height: null,
-		resizeMode: 'contain',
+		width: CON.WIDTH,
+		height: CON.HEIGHT - CON.ADS_HEIGHT*1.3,
+		resizeMode: 'stretch',
 		flex: 1
   },
   btnGroups: {

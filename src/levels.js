@@ -10,6 +10,7 @@ import {
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 const commonSt = require('./styles/common');
+const EnvImage = require('./environment');
 const _ = require('lodash');
 
 class Levels extends Component {
@@ -61,7 +62,7 @@ renderScene() {
 		
 		return (
 				<View style={commonSt.container}>
-						<Image source={require('./images/environment.png')} style={commonSt.envImage} />
+						<EnvImage/>
 						<View style={commonSt.btnGroups}>
 								{levelBtns}
 						</View>
