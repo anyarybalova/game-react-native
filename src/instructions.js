@@ -37,7 +37,7 @@ class Instructions extends Component {
       <View style={commonSt.container}>
             <EnvImage/>
             <View style={styles.texts}>
-              <Text style={[commonSt.text, styles.textBigger]}>The main objective is to situate tiles by color in any cuadrant.</Text>
+              <Text style={[commonSt.text, styles.textBigger]}>The main objective is to situate tiles by color in any quadrant.</Text>
               <Image source={require('./images/instructions.png')} style={styles.logo} />            
               <Text style={[commonSt.text, styles.textBigger]}>In the hard level it must match with the color of the quadrant.</Text>
             </View>

@@ -24,7 +24,7 @@ import Levels from './levels';
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
-export default class test03 extends Component {
+export default class app4x4 extends Component {
 
   bannerError() {
     console.log('banner error');

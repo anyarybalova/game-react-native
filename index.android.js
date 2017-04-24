@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import test03 from './src/nav'
+import app4x4 from './src/nav'
 
 
-AppRegistry.registerComponent('test03', () => test03);
+AppRegistry.registerComponent('app4x4', () => app4x4);

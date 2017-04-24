@@ -62,7 +62,7 @@ class Finish extends Component {
                     underlayColor="transparent"
                     style={commonSt.btn}>
                     <Image source={require('./images/btn_empty.png')} style={commonSt.imageBtn}>
-                        <Text style={commonSt.btnText}>Play again</Text>
+                        <Text style={commonSt.btnText}> Play again</Text>
                     </Image>
                 </TouchableHighlight>
 

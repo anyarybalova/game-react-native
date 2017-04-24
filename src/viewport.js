@@ -43,7 +43,7 @@ export default class Viewport extends Component {
            
             onPanResponderMove: (e, gesture) => {
                 var pos = this.state.pan.getLayout();
-                var CONFIG = {tension: 2, friction: 3};
+                var CONFIG = {tension: 2, friction: 1};
             },
 
             onPanResponderRelease: (e, gesture) => {
@@ -77,7 +77,8 @@ export default class Viewport extends Component {
                     Animated.spring(this.state.pan, {
                         toValue: {
                             x: this.state.pan.x._value + valueX, 
-                            y: this.state.pan.y._value + valueY}
+                            y: this.state.pan.y._value + valueY},
+                        bounciness: 5
                     }).start();
                 }
             }

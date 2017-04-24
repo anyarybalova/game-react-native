@@ -10,29 +10,19 @@ function getConstants(imageWidth) {
 	let Window = Dimensions.get('window'); 
 	const statusBar = StatusBar.currentHeight;
 
-	console.log('++++++++++++++++++++++++++++++++++++++++++++');
-	console.log(PixelRatio.get());
-	console.log(PixelRatio.getPixelSizeForLayoutSize(Window.width));
-	console.log(PixelRatio.getPixelSizeForLayoutSize(Window.height));
-	console.log(PixelRatio.getFontScale());
-	console.log('++++++++++++++++++++++++++++++++++++++++++++');
 	Const.ADS_HEIGHT = 50;
 	Const.ADS_WIDTH = 320;
 	const winWidth = Window.width;
 	const winHeight = Window.height - statusBar - Const.ADS_HEIGHT;
 	let cell = Math.floor(winWidth/(6));
-	console.log(cell);
-	const ratio = PixelRatio.get();
-	Const.ratio = ratio;
-	Const.prop = ratio/2;
 	Const.WIDTH = winWidth;
 	Const.HEIGHT = winHeight;
 	
 	Const.CELL = cell;
 	console.log(winWidth +' - ' +winHeight);
 	//offset for tiles
-	Const.OFFSET_LEFT = cell/1.98;
-	Const.OFFSET_TOP = cell/1.98;
+	Const.OFFSET_LEFT = cell/1.9;
+	Const.OFFSET_TOP = cell/1.9;
 
 
 	Const.FOOTER = winHeight - winHeight/6;
