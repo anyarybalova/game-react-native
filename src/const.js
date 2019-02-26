@@ -1,5 +1,5 @@
 'use strict';
-import {Dimensions, PixelRatio} from 'react-native';
+import {Dimensions} from 'react-native';
 import {StatusBar} from 'react-native';
 
 
@@ -19,12 +19,8 @@ function getConstants(imageWidth) {
 	Const.HEIGHT = winHeight;
 	
 	Const.CELL = cell;
-	console.log(winWidth +' - ' +winHeight);
-	//offset for tiles
 	Const.OFFSET_LEFT = cell/1.9;
 	Const.OFFSET_TOP = cell/1.9;
-
-
 	Const.FOOTER = winHeight - winHeight/6;
 	Const.OFFSET_BUTTONS = cell/2 * 3;
 	Const.BTN_WIDTH = winWidth*0.5;

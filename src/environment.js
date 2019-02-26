@@ -17,8 +17,7 @@ class Environment extends Component {
       <View style={{width: CON.WIDTH, height: CON.HEIGHT}}>
         <Image  
             source={require('./images/environment.png')} 
-            style= {commonSt.envImage}/>
-          
+            style= {commonSt.envImage}/>          
       </View>
     );
   }

@@ -19,16 +19,14 @@ import SplashPage from './splash';
 import Finish from './finish';
 import Levels from './levels';
 
-
-
 const CntMod = require('./const');
 const CON = (new CntMod()).CONST;
 
 export default class app4x4 extends Component {
 
   bannerError() {
-    console.log('banner error');
   }
+
   render() {
     return (
       <View style={styles.container}>

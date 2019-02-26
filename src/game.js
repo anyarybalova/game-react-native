@@ -9,13 +9,6 @@ import {
   NetInfo
 } from 'react-native';
 
-import { 
-  AdMobBanner, 
-  AdMobInterstitial, 
-  PublisherBanner,
-  AdMobRewarded
-} from 'react-native-admob'
-
 const Timer = require('react-native-timer');
 const _ = require('lodash');
 
@@ -160,29 +153,12 @@ class Game extends Component {
           }];
   }
 
-
-  measureView(event) {
-    
-    this.setState({
-      width : event.nativeEvent.layout.width
-    });
-    this.setState({
-      height : event.nativeEvent.layout.height
-    });
-  }
-
-  bannerError() {
-    console.log('banner error');
- }
-
-
-
   renderScene() {
     return (
         <View style={commonSt.container}>
           <EnvImage />
             <View style={styles.backdrop}>
-              <Image onLayout={(event) => this.measureView(event)} ref="container" 
+              <Image ref="container" 
               source={{uri: this.imgEnv}}
                   style={this.getStyle(this.order.transform)}></Image>
                   { this.state.isConnected ?

@@ -74,7 +74,5 @@ const styles = StyleSheet.create({
     zIndex: 2,
     width: CON.WIDTH,
     height: CON.WIDTH,
-    //marginTop: - CON.CELL/30
-    
   }
 });

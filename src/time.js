@@ -38,9 +38,6 @@ class Time extends Component {
    getTimingStyle(spin, color) {
       return [
           styles.timing, {
-            //backgroundColor: color,
-              //opacity: this.timeValue
-              //left: x,
               transform: [{rotate: spin}]  
           }];
   }

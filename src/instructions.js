@@ -38,7 +38,7 @@ class Instructions extends Component {
             <EnvImage/>
             <View style={styles.texts}>
               <Text style={[commonSt.text, styles.textBigger]}>The main objective is to situate tiles by color in any quadrant.</Text>
-              <Image source={require('./images/instructions.png')} style={styles.logo} />            
+              <Image source={require('./images/instructions.jpg')} style={styles.logo} />            
               <Text style={[commonSt.text, styles.textBigger]}>In the hard level it must match with the color of the quadrant.</Text>
             </View>
             <TouchableHighlight onPress={() => this.gotoMenu()} underlayColor="transparent" style={commonSt.btnBack}>
